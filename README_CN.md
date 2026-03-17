@@ -33,7 +33,9 @@ ResearchMate
 ├── config/                          <- 你的配置
 │   ├── 7 agents                     架构师、代码审查、论文审稿...
 │   ├── 13 rules                     编码规范、GPU 安全、学术诚信...
+│   ├── 25 commands                  /train、/plan、/review-paper...
 │   ├── 24 skills                    实验管理、模型开发、论文写作...
+│   ├── 4 contexts                   research、training、review、dev
 │   └── settings.json.template       全局配置模板
 │
 ├── third-party/ (git subtree)       <- 6 个精选工具，独立同步上游
@@ -42,7 +44,7 @@ ResearchMate
 │   ├── pi-autoresearch              1 skill · 1 extension — 通用自主优化循环
 │   ├── academic-research-skills     4 skills (13+12+7-agent) — 13-agent 文献 · 12-agent 写作
 │   ├── claude-review-loop           2 commands · 1 stop hook — 代码审查自动化
-│   └── claude-scientific-skills     170+ skills · 250+ 数据源 — 科学数据库接入
+│   └── claude-scientific-skills     175 skills · 250+ 数据源 — 科学数据库接入
 │
 ├── install.sh                       curl | bash 远程安装
 ├── setup.sh                         本地安装（幂等）
@@ -119,7 +121,7 @@ setup.sh 自动完成：备份已有配置 -> symlink 配置文件 -> 安装 ski
 ### claude-scientific-skills -- 科学数据库接入
 > [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) ![GitHub stars](https://img.shields.io/github/stars/K-Dense-AI/claude-scientific-skills?style=flat-square)
 
-- 170+ 生产就绪 skills
+- 175 生产就绪 skills
 - 接入 250+ 数据源（PubMed, ChEMBL, UniProt, COSMIC, SEC EDGAR...）
 - 19 种论文格式模板（Nature, Science, NeurIPS, ICLR...）
 
@@ -203,7 +205,7 @@ program.md + train.py。给 AI agent 一个 GPU，让它自主修改代码、训
 
 | 功能 | 类型 | 来源 | 说明 |
 |------|------|------|------|
-| 170+ 科学 skills | Skill | scientific-skills | PubMed, ChEMBL, UniProt 等 250+ 数据源 |
+| 175 科学 skills | Skill | scientific-skills | PubMed, ChEMBL, UniProt 等 250+ 数据源 |
 
 ### 文档与办公
 
@@ -225,10 +227,11 @@ program.md + train.py。给 AI agent 一个 GPU，让它自主修改代码、训
 
 | 类型 | 数量 | 来源分布 |
 |------|------|---------|
-| **Skills** | 200+ | config: 24, ARIS: 27, academic: 4, scientific: 170+ |
-| **Commands** | 23+ | config: 21, review-loop: 2 |
+| **Skills** | 230+ | config: 24, ARIS: 27, academic: 4, scientific: 175 |
+| **Commands** | 25+ | config: 23, review-loop: 2 |
 | **Agents** | 7 | config: 7 |
-| **MCP Servers** | 3 | ARIS: codex, llm-chat, minimax |
+| **MCP Servers** | 3 | ARIS (Codex, LLM-chat, MiniMax) |
+| **Contexts** | 4 | config |
 | **Hooks** | 3 | PreToolUse: 3 (settings.json) |
 | **Rules** | 13 | config: 13 |
 

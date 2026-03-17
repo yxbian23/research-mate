@@ -133,27 +133,68 @@ Not limited to ML -- optimize any quantifiable metric (build speed, bundle size,
 
 ### Research Automation
 
-`/idea-discovery` `/research-pipeline` `/novelty-check` `/autoresearch` `/autoresearch-loop` `/run-experiment` `/monitor-experiment` `/analyze-results` `/implement-paper` `/analyze-paper` -- MCP: Codex, LLM-chat.
+| Feature | Type | Source | Description |
+|---------|------|--------|-------------|
+| `/idea-discovery` | Skill | ARIS | Literature survey → brainstorm → novelty check → GPU pilot |
+| `/research-pipeline` | Skill | ARIS | End-to-end: idea → implement → review → submit |
+| `/autoresearch` | Skill | config | Karpathy-style autonomous ML experiments |
+| `/autoresearch-loop` | Skill | config | Domain-agnostic autonomous optimization loop |
+| `/implement-paper` | Command | config | Extract algorithms from papers → PyTorch code |
+| `/analyze-paper` | Command | config | Deep analysis of AI papers → structured report |
+| Codex / LLM-chat / MiniMax | MCP | ARIS | Cross-model adversarial review |
 
 ### Paper Writing
 
-`/paper-writing` `/paper-plan` `/paper-write` `/paper-figure` `/paper-compile` `/auto-paper-improvement-loop` -- plus skills: academic-paper (12-agent system), research-paper-workflow, ai-research-slides. 19 format templates (Nature, Science, NeurIPS, ICLR, ...).
+| Feature | Type | Source | Description |
+|---------|------|--------|-------------|
+| `/paper-writing` | Skill | ARIS | Narrative → outline → figures → LaTeX → PDF |
+| `/paper-plan` `/paper-write` `/paper-figure` `/paper-compile` | Skill | ARIS | Individual paper pipeline stages |
+| `/auto-paper-improvement-loop` | Skill | ARIS | Autonomous review → fix → recompile (2 rounds) |
+| academic-paper | Skill | academic-research | 12-agent writing system + bilingual abstracts |
+| research-paper-workflow | Skill | config | Paper structure, LaTeX best practices |
+| ai-research-slides | Skill | config | Paper analysis → academic presentation |
+| 19 format templates | Skill | scientific-skills | Nature / Science / NeurIPS / ICLR... |
 
 ### Literature Review & Peer Review
 
-`/auto-review-loop` `/research-review` `/review-paper` -- plus skills: deep-research (13-agent PRISMA), academic-paper-reviewer (7-agent, 0-100 scoring), academic-pipeline (10-stage orchestrator with integrity checks).
+| Feature | Type | Source | Description |
+|---------|------|--------|-------------|
+| `/auto-review-loop` | Skill | ARIS | 4-round GPT adversarial review |
+| `/research-review` | Skill | ARIS | Deep critical review via Codex MCP |
+| deep-research | Skill | academic-research | 13-agent PRISMA literature review |
+| academic-paper-reviewer | Skill | academic-research | 7-agent peer review (0-100 scoring) |
+| academic-pipeline | Skill | academic-research | 10-stage orchestrator with integrity checks |
+| `/review-paper` | Command | config | Generate ICLR/ICML/NeurIPS review comments |
 
 ### Experiment Management & Training
 
-`/train` `/checkpoint` `/debug-cuda` `/ablation` `/eval-model` `/benchmark` -- plus skills: experiment-management (wandb/tensorboard + hydra), gpu-optimization (mixed precision, gradient accumulation, model parallelism), pytorch-patterns (DDP/FSDP), dataset-processing.
+| Feature | Type | Source | Description |
+|---------|------|--------|-------------|
+| `/run-experiment` | Skill | ARIS | Remote GPU deployment + monitoring |
+| `/train` | Command | config | GPU check → config validation → launch training |
+| `/debug-cuda` | Command | config | CUDA memory / device issue diagnosis |
+| `/ablation` | Command | config | Ablation study design and comparison tables |
+| `/eval-model` | Command | config | Standard benchmark evaluation (FID/MMLU/VQA) |
+| `/benchmark` | Command | config | Run standard ML benchmarks |
+| experiment-management | Skill | config | wandb/tensorboard + hydra config management |
+| gpu-optimization | Skill | config | Mixed precision, gradient accumulation, parallelism |
+| pytorch-patterns | Skill | config | Model architecture, DDP/FSDP, checkpointing |
+| dataset-processing | Skill | config | Large-scale data loading, augmentation, streaming |
 
 ### Code Review & Quality
 
-`/review-loop` `/code-review` `/test-coverage` `/refactor-clean` -- plus agents: code-reviewer, security-reviewer. Stop hook auto-triggers Codex review on session end.
+| Feature | Type | Source | Description |
+|---------|------|--------|-------------|
+| `/review-loop` | Command | claude-review-loop | Codex independent review after task completion |
+| `/code-review` | Command | config | Code quality and security review |
+| `/test-coverage` | Command | config | Test coverage analysis (80%+ target) |
+| `/refactor-clean` | Command | config | Dead code identification and safe removal |
+| code-reviewer | Agent | config | Code quality review specialist |
+| security-reviewer | Agent | config | Security vulnerability detection |
 
 ### Scientific Data Access
 
-175 skills covering 250+ scientific databases and APIs. Ready to query from within Claude Code.
+175 production-ready skills covering 250+ scientific databases and APIs (PubMed, ChEMBL, UniProt, COSMIC, SEC EDGAR, and more). 19 journal/conference paper format templates.
 
 ### Office Documents
 
@@ -161,7 +202,24 @@ Skills for PDF, DOCX, PPTX, and XLSX creation, editing, and analysis.
 
 ### Maintenance
 
-In-Claude commands: `/sync-upstream` `/add-tool` `/research-mate-update`. Shell scripts: `sync-upstream.sh` `add-tool.sh`.
+| Feature | Type | Description |
+|---------|------|-------------|
+| `/sync-upstream` | Claude Code command | Sync third-party tools with upstream from within Claude |
+| `/add-tool` | Claude Code command | Add new third-party tool from within Claude |
+| `/research-mate-update` | Claude Code command | Pull latest changes + re-run setup |
+| `sync-upstream.sh` | Shell script | Manual sync (all or single tool) |
+| `add-tool.sh` | Shell script | Manual add new tool via git subtree |
+
+### Statistics
+
+| Type | Count | Sources |
+|------|-------|---------|
+| **Skills** | 230+ | config: 24, ARIS: 27, academic: 4, scientific: 175 |
+| **Commands** | 25 | config: 23, review-loop: 2 |
+| **Agents** | 7 | config |
+| **MCP Servers** | 3 | ARIS: Codex, LLM-chat, MiniMax |
+| **Rules** | 13 | config |
+| **Contexts** | 4 | config |
 
 ## Dependencies
 
