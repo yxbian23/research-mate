@@ -1,0 +1,145 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Every Monday at 08:00 UTC
+  workflow_dispatch:       # Manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tool:
+          - name: aris
+            url: https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep.git
+            branch: main
+          - name: autoresearch
+            url: https://github.com/karpathy/autoresearch.git
+            branch: master
+          - name: pi-autoresearch
+            url: https://github.com/davebcn87/pi-autoresearch.git
+            branch: main
+          - name: claude-review-loop
+            url: https://github.com/hamelsmu/claude-review-loop.git
+            branch: main
+          - name: academic-research-skills
+            url: https://github.com/Imbad0202/academic-research-skills.git
+            branch: main
+          - name: claude-scientific-skills
+            url: https://github.com/K-Dense-AI/claude-scientific-skills.git
+            branch: main
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Attempt subtree pull
+        id: sync
+        run: |
+          TOOL="${{ matrix.tool.name }}"
+          URL="${{ matrix.tool.url }}"
+          BRANCH="${{ matrix.tool.branch }}"
+          PREFIX="third-party/${TOOL}"
+
+          # Create sync branch
+          SYNC_BRANCH="sync/${TOOL}-$(date +%Y%m%d)"
+          git checkout -b "$SYNC_BRANCH"
+
+          # Try subtree pull
+          if git subtree pull --prefix="$PREFIX" "$URL" "$BRANCH" --squash \
+              -m "chore: sync upstream ${TOOL}" 2>&1; then
+            echo "has_changes=$(git diff main --quiet && echo false || echo true)" >> "$GITHUB_OUTPUT"
+            echo "has_conflict=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "has_conflict=true" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "sync_branch=$SYNC_BRANCH" >> "$GITHUB_OUTPUT"
+          echo "tool=$TOOL" >> "$GITHUB_OUTPUT"
+
+      - name: Push branch & create PR
+        if: steps.sync.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TOOL="${{ steps.sync.outputs.tool }}"
+          BRANCH="${{ steps.sync.outputs.sync_branch }}"
+          HAS_CONFLICT="${{ steps.sync.outputs.has_conflict }}"
+
+          git push origin "$BRANCH"
+
+          LABELS="sync-upstream"
+          if [[ "$HAS_CONFLICT" == "true" ]]; then
+            LABELS="$LABELS,has-conflict"
+          fi
+
+          gh pr create \
+            --title "chore: sync upstream ${TOOL}" \
+            --body "Automated upstream sync for \`third-party/${TOOL}\`." \
+            --base main \
+            --head "$BRANCH" \
+            --label "$LABELS" || echo "PR may already exist"
+
+      - name: Claude review and auto-merge
+        if: steps.sync.outputs.has_changes == 'true' && steps.sync.outputs.has_conflict == 'false' && env.ANTHROPIC_API_KEY != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TOOL="${{ steps.sync.outputs.tool }}"
+
+          # Get diff for Claude review
+          DIFF=$(git diff main...HEAD -- "third-party/${TOOL}/" | head -c 8000)
+
+          # Call Claude API for review
+          REVIEW=$(curl -s https://api.anthropic.com/v1/messages \
+            -H "Content-Type: application/json" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -d "$(jq -n \
+              --arg diff "$DIFF" \
+              --arg tool "$TOOL" \
+              '{
+                model: "claude-haiku-4-5-20251001",
+                max_tokens: 1024,
+                messages: [{
+                  role: "user",
+                  content: ("Review this upstream sync diff for " + $tool + ". Check for: breaking changes, security issues, removed features. Reply APPROVE if safe, REJECT with reason if not.\n\n" + $diff)
+                }]
+              }')" | jq -r '.content[0].text')
+
+          echo "Claude review: $REVIEW"
+
+          if echo "$REVIEW" | grep -qi "APPROVE"; then
+            PR_NUM=$(gh pr list --head "${{ steps.sync.outputs.sync_branch }}" --json number -q '.[0].number')
+            if [[ -n "$PR_NUM" ]]; then
+              gh pr merge "$PR_NUM" --squash --auto
+              echo "Auto-merged PR #${PR_NUM}"
+            fi
+          else
+            PR_NUM=$(gh pr list --head "${{ steps.sync.outputs.sync_branch }}" --json number -q '.[0].number')
+            if [[ -n "$PR_NUM" ]]; then
+              gh pr edit "$PR_NUM" --add-label "needs-review"
+              gh pr comment "$PR_NUM" --body "Claude review flagged potential issues:\n\n${REVIEW}"
+            fi
+          fi
+
+      - name: Skip Claude review (no API key)
+        if: steps.sync.outputs.has_changes == 'true' && steps.sync.outputs.has_conflict == 'false' && env.ANTHROPIC_API_KEY == ''
+        run: |
+          echo "ANTHROPIC_API_KEY 未配置，跳过 Claude 审核。请手动 review 此 PR。"

@@ -1,0 +1,92 @@
+{
+  "_generated_by": "ResearchMate",
+  "thinkingBudget": "max",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "96000",
+    "MAX_THINKING_TOKENS": "100000"
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "WebFetch",
+      "Agent",
+      "Bash(*)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(rm -r /*)",
+      "Bash(rm -rf /*)",
+      "Bash(sudo rm *)",
+      "Bash(mkfs*)",
+      "Bash(dd if=*)",
+      "Bash(> /dev/*)",
+      "Bash(chmod -R 000*)",
+      "Bash(git push --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -fd*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "tool == \"Bash\" && tool_input.command matches \"python.*train\"",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[Hook] Training detected. Checklist: GPU memory? Config valid? Experiment tracking?' >&2"
+          }
+        ]
+      },
+      {
+        "matcher": "tool == \"Bash\" && tool_input.command matches \"(torchrun|deepspeed|accelerate launch)\"",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[Hook] Distributed training — consider tmux: tmux new -s train' >&2"
+          }
+        ]
+      },
+      {
+        "matcher": "tool == \"Bash\" && tool_input.command matches \"git push\"",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[Hook] Check: no API keys or model weights in commit' >&2"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "tool == \"Edit\" && tool_input.file_path matches \"\\\\.py$\"",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const{execSync}=require('child_process');const fs=require('fs');let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{const i=JSON.parse(d);const p=i.tool_input?.file_path;if(p&&fs.existsSync(p)){try{execSync('which ruff > /dev/null 2>&1 && ruff format \"'+p+'\" 2>/dev/null',{stdio:['pipe','pipe','pipe']})}catch(e){}}console.log(d)})\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const{execSync}=require('child_process');const fs=require('fs');let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{execSync('git rev-parse --git-dir',{stdio:'pipe'})}catch{console.log(d);process.exit(0)}try{const files=execSync('git diff --name-only HEAD',{encoding:'utf8',stdio:['pipe','pipe','pipe']}).split('\\n').filter(f=>/\\.(py|yaml|json)$/.test(f)&&fs.existsSync(f));for(const f of files){const c=fs.readFileSync(f,'utf8');if(/['\\\"]?(sk-|hf_|wandb_)[a-zA-Z0-9]+['\\\"]?/.test(c)){console.error('[Hook] WARNING: Possible API key in '+f)}}}catch(e){}console.log(d)})\""
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "document-skills@anthropic-agent-skills": true,
+    "huggingface-skills@claude-plugins-official": true
+  }
+}

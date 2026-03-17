@@ -1,0 +1,46 @@
+# Environment
+.env
+.env.local
+
+# Secrets
+*.pem
+*credentials*
+secrets.yaml
+
+# Model weights
+*.pt
+*.pth
+*.safetensors
+*.ckpt
+checkpoints/
+
+# Experiment outputs
+wandb/
+outputs/
+logs/
+
+# Data
+data/
+*.parquet
+*.arrow
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+package-lock.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
