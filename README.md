@@ -7,7 +7,6 @@
 *Your config + 6 curated third-party tools. Unified management. One-click deploy. Auto-sync upstream.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/yxbian23/research-mate)](https://github.com/yxbian23/research-mate/stargazers)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-blue)]()
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-blueviolet)]()
 
@@ -232,6 +231,19 @@ git add . && git commit -m "feat: customize ARIS review loop" && git push
 # Or via shell:
 cd ~/.research-mate && git pull && ./setup.sh
 ```
+
+## Comparison
+
+| Capability | everything-claude-code | dot-claude | starter-kit | **ResearchMate** |
+|-----------|:---:|:---:|:---:|:---:|
+| Store your own config | ~ | ✅ | ~ | ✅ |
+| Integrate multiple third-party tools | ❌ | ❌ | ❌ | ✅ (6 tools) |
+| Independent upstream sync per tool | ❌ | ❌ | ~ (one only) | ✅ |
+| Local edits still mergeable with upstream | ❌ | N/A | ✅ | ✅ |
+| One-click new machine deploy | ✅ | ✅ | ~ | ✅ |
+| AI researcher workflows | ❌ | ❌ | ❌ | ✅ |
+| Claude auto-reviews sync PRs | ❌ | ❌ | ❌ | ✅ |
+| In-Claude maintenance commands | ❌ | ❌ | ❌ | ✅ |
 
 ## Design Principles
 

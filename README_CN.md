@@ -7,7 +7,6 @@
 *你的配置 + 6 个精选第三方工具，统一管理，一键部署，自动同步。*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/yxbian23/research-mate)](https://github.com/yxbian23/research-mate/stargazers)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-blue)]()
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-blueviolet)]()
 
@@ -296,6 +295,19 @@ setup.sh 自动检测平台并给出安装提示。
 | PyTorch | autoresearch | `pip install torch` | 同左 |
 
 > Linux 也支持 `dnf` (Fedora/RHEL) 和 `pacman` (Arch)，setup.sh 自动检测。
+
+## 和其他方案的对比
+
+| 能力 | everything-claude-code | dot-claude | starter-kit | **ResearchMate** |
+|------|:---:|:---:|:---:|:---:|
+| 存自己的配置 | ~ | ✅ | ~ | ✅ |
+| 集成多个第三方工具 | ❌ | ❌ | ❌ | ✅ (6 个) |
+| 各工具独立上游同步 | ❌ | ❌ | ~ (仅一个) | ✅ |
+| 本地修改后仍可同步 | ❌ | N/A | ✅ | ✅ |
+| 一键新电脑部署 | ✅ | ✅ | ~ | ✅ |
+| AI 研究者场景 | ❌ | ❌ | ❌ | ✅ |
+| Claude 自动审核同步 PR | ❌ | ❌ | ❌ | ✅ |
+| Claude Code 内维护命令 | ❌ | ❌ | ❌ | ✅ |
 
 ## 设计原则
 
