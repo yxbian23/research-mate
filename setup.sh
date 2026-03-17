@@ -132,13 +132,42 @@ check_dep git
 check_dep node
 check_dep npm
 
+# Check node version >= 18 (required by claude-code)
+NODE_MAJOR=$(node -v 2>/dev/null | sed 's/^v//' | cut -d. -f1)
+if [[ -n "$NODE_MAJOR" ]] && [[ "$NODE_MAJOR" -lt 18 ]]; then
+    echo ""
+    echo "  ✗ node v$(node -v) is too old (claude-code requires >=18)"
+    echo "    Upgrade: $(install_hint node)"
+    echo "    Then re-run: ./setup.sh"
+    exit 1
+fi
+
+# Helper: npm global install with EACCES fallback
+NPM_USER_PREFIX="${HOME}/.npm-global"
+npm_install_global() {
+    local pkg="$1"
+    # Try normal global install first
+    if npm i -g "$pkg" 2>&1; then
+        return 0
+    fi
+    # EACCES fallback: install to user prefix
+    echo "    Permission denied — retrying with --prefix ${NPM_USER_PREFIX}..."
+    mkdir -p "$NPM_USER_PREFIX"
+    if npm i -g --prefix "$NPM_USER_PREFIX" "$pkg" 2>&1; then
+        # Ensure user prefix bin is in PATH for this session
+        export PATH="${NPM_USER_PREFIX}/bin:$PATH"
+        return 0
+    fi
+    return 1
+}
+
 # Auto-install claude if missing
 echo "CLI tools:"
 if [[ -n "$CLAUDE_BIN" ]]; then
     echo "  ✓ claude ($CLAUDE_BIN)"
 else
     echo "  ⟳ claude not found — installing via npm..."
-    if npm i -g @anthropic-ai/claude-code; then
+    if npm_install_global @anthropic-ai/claude-code; then
         hash -r 2>/dev/null
         CLAUDE_BIN="$(command -v claude 2>/dev/null || true)"
         if [[ -n "$CLAUDE_BIN" ]]; then
@@ -157,7 +186,7 @@ if [[ -n "$CODEX_BIN" ]]; then
     echo "  ✓ codex ($CODEX_BIN)"
 else
     echo "  ⟳ codex not found — installing via npm..."
-    if npm i -g @openai/codex; then
+    if npm_install_global @openai/codex; then
         hash -r 2>/dev/null
         CODEX_BIN="$(command -v codex 2>/dev/null || true)"
         if [[ -n "$CODEX_BIN" ]]; then
