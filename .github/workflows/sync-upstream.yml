@@ -12,6 +12,8 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    env:
+      HAS_ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
     strategy:
       fail-fast: false
       matrix:
@@ -96,7 +98,7 @@ jobs:
             --label "$LABELS" || echo "PR may already exist"
 
       - name: Claude review and auto-merge
-        if: steps.sync.outputs.has_changes == 'true' && steps.sync.outputs.has_conflict == 'false' && secrets.ANTHROPIC_API_KEY != ''
+        if: steps.sync.outputs.has_changes == 'true' && steps.sync.outputs.has_conflict == 'false' && env.HAS_ANTHROPIC_KEY == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -140,6 +142,6 @@ jobs:
           fi
 
       - name: Skip Claude review (no API key)
-        if: steps.sync.outputs.has_changes == 'true' && steps.sync.outputs.has_conflict == 'false' && secrets.ANTHROPIC_API_KEY == ''
+        if: steps.sync.outputs.has_changes == 'true' && steps.sync.outputs.has_conflict == 'false' && env.HAS_ANTHROPIC_KEY != 'true'
         run: |
-          echo "ANTHROPIC_API_KEY 未配置，跳过 Claude 审核。请手动 review 此 PR。"
+          echo "ANTHROPIC_API_KEY not configured. Skipping Claude review. Please review this PR manually."
