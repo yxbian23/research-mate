@@ -6,7 +6,7 @@
 
 **One-click Claude Code toolkit for AI researchers**
 
-*Your config + 6 curated third-party tools. Unified management. One-click deploy. Auto-sync upstream.*
+*Your config + 6 curated tools in one repo. One-click deploy. Customize freely. Auto-sync upstream.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-blue)]()

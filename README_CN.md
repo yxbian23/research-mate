@@ -6,7 +6,7 @@
 
 **AI 研究者的 Claude Code 一键工具箱**
 
-*你的配置 + 6 个精选第三方工具，统一管理，一键部署，自动同步。*
+*你的配置 + 6 个精选工具，一键部署，自由魔改，自动同步上游。*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-blue)]()
