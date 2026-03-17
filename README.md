@@ -87,6 +87,7 @@ The setup script automatically:
 - Registers MCP servers (Codex, LLM-chat, MiniMax)
 - Installs Claude Code plugins (document-skills, huggingface-skills)
 - Prompts for API key configuration
+- Works with any combination: no Claude/Codex, either one, or both installed
 
 ## Key Features
 

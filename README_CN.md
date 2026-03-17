@@ -91,7 +91,7 @@ git clone https://github.com/yxbian23/research-mate.git ~/.research-mate
 cd ~/.research-mate && ./setup.sh
 ```
 
-setup.sh 自动完成：备份已有配置 -> symlink 配置文件 -> 安装 skills（含冲突检测）-> 注册 MCP servers -> 安装 plugins -> 提示配置 API keys。
+setup.sh 自动完成：备份已有配置 → symlink 配置文件 → 安装 skills（含冲突检测）→ 注册 MCP servers → 安装 plugins → 提示配置 API keys。自动适配 Claude/Codex 未安装、仅安装其一、两者都安装的情况。
 
 ## 集成的第三方工具
 
