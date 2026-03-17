@@ -34,10 +34,12 @@ echo "  ======================"
 if [[ -n "$CLAUDE_BIN" ]]; then
     echo "  Claude: $CLAUDE_BIN"
 else
-    echo "  Claude: not found (will skip MCP/plugin setup)"
+    echo "  Claude: not found (will auto-install)"
 fi
 if [[ -n "$CODEX_BIN" ]]; then
     echo "  Codex:  $CODEX_BIN"
+else
+    echo "  Codex:  not found (will auto-install)"
 fi
 echo ""
 
