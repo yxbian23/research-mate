@@ -216,17 +216,23 @@ echo ""
 # ════════════════════════════════════════════
 if [[ ! -f "${REPO}/.env" ]]; then
     cp "${REPO}/.env.template" "${REPO}/.env"
-    echo "=== API Key Configuration ==="
-    echo "Keys are used for GitHub Actions auto-review & ARIS cross-model review."
-    echo "You can configure them later in .env. Press Enter to skip."
-    echo ""
-    read -rp "ANTHROPIC_API_KEY (for Claude review): " ANTHROPIC_KEY
-    if [[ -n "$ANTHROPIC_KEY" ]]; then
-        sed_inplace "s|^ANTHROPIC_API_KEY=.*|ANTHROPIC_API_KEY=${ANTHROPIC_KEY}|" "${REPO}/.env"
-        echo "  Note: Also add ANTHROPIC_API_KEY to GitHub repo Settings → Secrets"
-        echo "  to enable auto-review on sync PRs."
+    if [[ -t 0 ]]; then
+        # stdin is a terminal — safe to prompt
+        echo "=== API Key Configuration ==="
+        echo "Keys are used for GitHub Actions auto-review & ARIS cross-model review."
+        echo "You can configure them later in .env. Press Enter to skip."
+        echo ""
+        read -rp "ANTHROPIC_API_KEY (for Claude review): " ANTHROPIC_KEY
+        if [[ -n "$ANTHROPIC_KEY" ]]; then
+            sed_inplace "s|^ANTHROPIC_API_KEY=.*|ANTHROPIC_API_KEY=${ANTHROPIC_KEY}|" "${REPO}/.env"
+            echo "  Note: Also add ANTHROPIC_API_KEY to GitHub repo Settings → Secrets"
+            echo "  to enable auto-review on sync PRs."
+        fi
+        echo ""
+    else
+        echo "=== API Key Configuration ==="
+        echo "  Skipped (non-interactive mode). Configure later in: ${REPO}/.env"
     fi
-    echo ""
 fi
 
 mkdir -p "${HOME}/.claude" "${HOME}/.claude/skills/learned"
