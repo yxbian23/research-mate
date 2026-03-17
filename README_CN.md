@@ -1,5 +1,7 @@
 <div align="center">
 
+[English](README.md) | **中文**
+
 # ResearchMate
 
 **AI 研究者的 Claude Code 一键工具箱**
@@ -161,17 +163,17 @@ program.md + train.py。给 AI agent 一个 GPU，让它自主修改代码、训
 | 功能 | 类型 | 来源 | 说明 |
 |------|------|------|------|
 | `/paper-writing` | Skill | ARIS | 叙述 -> LaTeX，支持 ICLR/ICML/NeurIPS |
-| academic-paper | Skill | academic-research | 12-agent 写作系统 + 双语摘要 |
+| `/academic-paper` | Skill | academic-research | 12-agent 写作系统 + 双语摘要 |
 | 19 种格式模板 | Skill | scientific-skills | Nature/Science/NeurIPS/ICLR... |
-| ai-research-slides | Skill | config | 论文分析 -> 学术演示文稿 |
+| `/ai-research-slides` | Skill | config | 论文分析 -> 学术演示文稿 |
 
 ### 文献综述与审稿
 
 | 功能 | 类型 | 来源 | 说明 |
 |------|------|------|------|
 | `/auto-review-loop` | Skill | ARIS | 4 轮 GPT 对抗审稿 |
-| deep-research | Skill | academic-research | 13-agent PRISMA 文献综述 |
-| academic-paper-reviewer | Skill | academic-research | 7-agent 同行评审（0-100） |
+| `/deep-research` | Skill | academic-research | 13-agent PRISMA 文献综述 |
+| `/academic-paper-reviewer` | Skill | academic-research | 7-agent 同行评审（0-100） |
 | `/review-paper` | Command | config | ICLR/ICML/NeurIPS 标准审稿 |
 
 ### 实验管理与训练
@@ -182,15 +184,15 @@ program.md + train.py。给 AI agent 一个 GPU，让它自主修改代码、训
 | `/train` | Command | config | GPU 检查 -> 配置验证 -> 训练启动 |
 | `/debug-cuda` | Command | config | CUDA 内存/设备问题诊断 |
 | `/ablation` | Command | config | 消融实验设计与对比 |
-| gpu-optimization | Skill | config | 混合精度、梯度累积、模型并行 |
+| `/gpu-optimization` | Skill | config | 混合精度、梯度累积、模型并行 |
 
 ### 模型开发
 
 | 功能 | 类型 | 来源 | 说明 |
 |------|------|------|------|
-| transformers-workflow | Skill | config | HuggingFace: LoRA/QLoRA、Trainer API |
-| diffusers-workflow | Skill | config | 扩散模型: ControlNet、采样器 |
-| unified-generation | Skill | config | 多任务架构、多模态 tokenization |
+| `/transformers-workflow` | Skill | config | HuggingFace: LoRA/QLoRA、Trainer API |
+| `/diffusers-workflow` | Skill | config | 扩散模型: ControlNet、采样器 |
+| `/unified-generation` | Skill | config | 多任务架构、多模态 tokenization |
 
 ### 代码审查
 
@@ -211,7 +213,7 @@ program.md + train.py。给 AI agent 一个 GPU，让它自主修改代码、训
 
 | 功能 | 类型 | 来源 | 说明 |
 |------|------|------|------|
-| pdf / docx / pptx / xlsx | Skill | config | PDF/Word/PPT/Excel 创建编辑分析 |
+| `/pdf` `/docx` `/pptx` `/xlsx` | Skill | config | PDF/Word/PPT/Excel 创建编辑分析 |
 
 ### 维护更新
 

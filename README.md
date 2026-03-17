@@ -1,5 +1,7 @@
 <div align="center">
 
+**English** | [中文](README_CN.md)
+
 # ResearchMate
 
 **One-click Claude Code toolkit for AI researchers**
@@ -150,9 +152,9 @@ Not limited to ML -- optimize any quantifiable metric (build speed, bundle size,
 | `/paper-writing` | Skill | ARIS | Narrative → outline → figures → LaTeX → PDF |
 | `/paper-plan` `/paper-write` `/paper-figure` `/paper-compile` | Skill | ARIS | Individual paper pipeline stages |
 | `/auto-paper-improvement-loop` | Skill | ARIS | Autonomous review → fix → recompile (2 rounds) |
-| academic-paper | Skill | academic-research | 12-agent writing system + bilingual abstracts |
-| research-paper-workflow | Skill | config | Paper structure, LaTeX best practices |
-| ai-research-slides | Skill | config | Paper analysis → academic presentation |
+| `/academic-paper` | Skill | academic-research | 12-agent writing system + bilingual abstracts |
+| `/research-paper-workflow` | Skill | config | Paper structure, LaTeX best practices |
+| `/ai-research-slides` | Skill | config | Paper analysis → academic presentation |
 | 19 format templates | Skill | scientific-skills | Nature / Science / NeurIPS / ICLR... |
 
 ### Literature Review & Peer Review
@@ -161,9 +163,9 @@ Not limited to ML -- optimize any quantifiable metric (build speed, bundle size,
 |---------|------|--------|-------------|
 | `/auto-review-loop` | Skill | ARIS | 4-round GPT adversarial review |
 | `/research-review` | Skill | ARIS | Deep critical review via Codex MCP |
-| deep-research | Skill | academic-research | 13-agent PRISMA literature review |
-| academic-paper-reviewer | Skill | academic-research | 7-agent peer review (0-100 scoring) |
-| academic-pipeline | Skill | academic-research | 10-stage orchestrator with integrity checks |
+| `/deep-research` | Skill | academic-research | 13-agent PRISMA literature review |
+| `/academic-paper-reviewer` | Skill | academic-research | 7-agent peer review (0-100 scoring) |
+| `/academic-pipeline` | Skill | academic-research | 10-stage orchestrator with integrity checks |
 | `/review-paper` | Command | config | Generate ICLR/ICML/NeurIPS review comments |
 
 ### Experiment Management & Training
@@ -176,10 +178,10 @@ Not limited to ML -- optimize any quantifiable metric (build speed, bundle size,
 | `/ablation` | Command | config | Ablation study design and comparison tables |
 | `/eval-model` | Command | config | Standard benchmark evaluation (FID/MMLU/VQA) |
 | `/benchmark` | Command | config | Run standard ML benchmarks |
-| experiment-management | Skill | config | wandb/tensorboard + hydra config management |
-| gpu-optimization | Skill | config | Mixed precision, gradient accumulation, parallelism |
-| pytorch-patterns | Skill | config | Model architecture, DDP/FSDP, checkpointing |
-| dataset-processing | Skill | config | Large-scale data loading, augmentation, streaming |
+| `/experiment-management` | Skill | config | wandb/tensorboard + hydra config management |
+| `/gpu-optimization` | Skill | config | Mixed precision, gradient accumulation, parallelism |
+| `/pytorch-patterns` | Skill | config | Model architecture, DDP/FSDP, checkpointing |
+| `/dataset-processing` | Skill | config | Large-scale data loading, augmentation, streaming |
 
 ### Code Review & Quality
 
