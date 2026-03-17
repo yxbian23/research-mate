@@ -59,7 +59,7 @@ if [[ -d "$INSTALL_DIR" ]]; then
     cd "$INSTALL_DIR" && git pull --ff-only
 else
     echo "  Cloning to ${INSTALL_DIR}..."
-    git clone "$REPO_URL" "$INSTALL_DIR"
+    GIT_LFS_SKIP_SMUDGE=1 git clone "$REPO_URL" "$INSTALL_DIR"
 fi
 
 # Run setup (CLAUDE_BIN and CODEX_BIN are exported)
