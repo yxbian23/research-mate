@@ -231,7 +231,9 @@ if [[ ! -f "${REPO}/.env" ]]; then
         echo ""
     else
         echo "=== API Key Configuration ==="
-        echo "  Skipped (non-interactive mode). Configure later in: ${REPO}/.env"
+        echo "  Skipped (non-interactive mode)."
+        echo "  Configure keys:  vim ${REPO}/.env"
+        echo "  Then re-run:     cd ${REPO} && ./setup.sh"
     fi
 fi
 

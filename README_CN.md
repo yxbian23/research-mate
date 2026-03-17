@@ -93,6 +93,49 @@ cd ~/.research-mate && ./setup.sh
 
 setup.sh 自动完成：备份已有配置 → symlink 配置文件 → 安装 skills（含冲突检测）→ 注册 MCP servers → 安装 plugins → 提示配置 API keys。自动适配 Claude/Codex 未安装、仅安装其一、两者都安装的情况。
 
+## 配置
+
+### API Keys
+
+编辑 `~/.research-mate/.env` 配置 API keys：
+
+| Key | 是否必需？ | 用途 |
+|-----|-----------|------|
+| `ANTHROPIC_API_KEY` | 自动审稿 | GitHub Actions PR 自动审查（Claude） |
+| `OPENAI_API_KEY` | ARIS | 跨模型对抗审查（Codex MCP） |
+| `LLM_API_KEY` | ARIS | LLM-chat MCP（DeepSeek / Kimi / MiniMax） |
+| `LLM_API_BASE` | 配合 LLM_API_KEY | LLM-chat 的 API base URL |
+| `MINIMAX_API_KEY` | ARIS | MiniMax-chat MCP |
+| `HF_TOKEN` | 模型下载 | Hugging Face 模型下载 |
+| `WANDB_API_KEY` | 实验追踪 | Weights & Biases 实验追踪 |
+
+> 通过 `curl | bash` 安装时，API key 提示会被自动跳过。
+> 安装后按以下步骤补配。
+
+### 安装后补配
+
+如果安装时跳过了 API key 配置（例如通过 `curl | bash`）：
+
+```bash
+# 1. 编辑 .env，填入你的 keys
+vim ~/.research-mate/.env
+
+# 2. 重新运行 setup 注册 MCP servers
+cd ~/.research-mate && ./setup.sh
+```
+
+`setup.sh` 是幂等的——它会读取 `.env`，检测新增的 keys，并注册对应的 MCP servers（LLM-chat、MiniMax），不会影响已有配置。
+
+也可以手动注册 MCP servers：
+
+```bash
+# LLM-chat MCP（需要 .env 中配置 LLM_API_KEY）
+claude mcp add llm-chat -s user -- python3 ~/.research-mate/third-party/aris/mcp-servers/llm-chat/server.py
+
+# MiniMax MCP（需要 .env 中配置 MINIMAX_API_KEY）
+claude mcp add minimax-chat -s user -- python3 ~/.research-mate/third-party/aris/mcp-servers/minimax-chat/server.py
+```
+
 ## 集成的第三方工具
 
 ### Auto-claude-code-research-in-sleep (ARIS) -- AI 研究自动化引擎

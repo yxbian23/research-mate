@@ -89,6 +89,49 @@ The setup script automatically:
 - Prompts for API key configuration
 - Works with any combination: no Claude/Codex, either one, or both installed
 
+## Configuration
+
+### API Keys
+
+Edit `~/.research-mate/.env` to configure API keys:
+
+| Key | Required? | Purpose |
+|-----|-----------|---------|
+| `ANTHROPIC_API_KEY` | For auto-review | GitHub Actions PR auto-review via Claude |
+| `OPENAI_API_KEY` | For ARIS | Cross-model adversarial review (Codex MCP) |
+| `LLM_API_KEY` | For ARIS | LLM-chat MCP (DeepSeek / Kimi / MiniMax) |
+| `LLM_API_BASE` | With LLM_API_KEY | API base URL for LLM-chat |
+| `MINIMAX_API_KEY` | For ARIS | MiniMax-chat MCP |
+| `HF_TOKEN` | For models | Hugging Face model downloads |
+| `WANDB_API_KEY` | For tracking | Weights & Biases experiment tracking |
+
+> When running via `curl | bash`, the API key prompt is skipped automatically.
+> Configure keys afterwards as described below.
+
+### Post-Install Setup
+
+If you skipped API key configuration during install (e.g., via `curl | bash`):
+
+```bash
+# 1. Edit .env and add your keys
+vim ~/.research-mate/.env
+
+# 2. Re-run setup to register MCP servers
+cd ~/.research-mate && ./setup.sh
+```
+
+`setup.sh` is idempotent — it reads `.env`, detects newly added keys, and registers the corresponding MCP servers (LLM-chat, MiniMax) without affecting existing config.
+
+Alternatively, register MCP servers manually:
+
+```bash
+# LLM-chat MCP (requires LLM_API_KEY in .env)
+claude mcp add llm-chat -s user -- python3 ~/.research-mate/third-party/aris/mcp-servers/llm-chat/server.py
+
+# MiniMax MCP (requires MINIMAX_API_KEY in .env)
+claude mcp add minimax-chat -s user -- python3 ~/.research-mate/third-party/aris/mcp-servers/minimax-chat/server.py
+```
+
 ## Key Features
 
 | Feature | How it works |
