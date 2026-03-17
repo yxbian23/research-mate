@@ -314,9 +314,15 @@ for skill in "${REPO}"/third-party/academic-research-skills/*/; do
 done
 
 # Priority 4: claude-scientific-skills
-for skill in "${REPO}"/third-party/claude-scientific-skills/skills/*/; do
+for skill in "${REPO}"/third-party/claude-scientific-skills/scientific-skills/*/; do
     [[ -d "$skill" ]] || continue
     register_skill "$(basename "$skill")" "$skill" "claude-scientific-skills" || true
+done
+
+# Priority 5: pi-autoresearch skills
+for skill in "${REPO}"/third-party/pi-autoresearch/skills/*/; do
+    [[ -d "$skill" ]] || continue
+    register_skill "$(basename "$skill")" "$skill" "pi-autoresearch" || true
 done
 
 echo "  ✓ ${SKILL_COUNT} skills installed"

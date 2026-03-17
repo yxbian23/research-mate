@@ -79,6 +79,16 @@
         "hooks": [
           {
             "type": "command",
+            "command": "__REPO__/third-party/claude-review-loop/plugins/review-loop/hooks/stop-hook.sh",
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
             "command": "node -e \"const{execSync}=require('child_process');const fs=require('fs');let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{execSync('git rev-parse --git-dir',{stdio:'pipe'})}catch{console.log(d);process.exit(0)}try{const files=execSync('git diff --name-only HEAD',{encoding:'utf8',stdio:['pipe','pipe','pipe']}).split('\\n').filter(f=>/\\.(py|yaml|json)$/.test(f)&&fs.existsSync(f));for(const f of files){const c=fs.readFileSync(f,'utf8');if(/['\\\"]?(sk-|hf_|wandb_)[a-zA-Z0-9]+['\\\"]?/.test(c)){console.error('[Hook] WARNING: Possible API key in '+f)}}}catch(e){}console.log(d)})\""
           }
         ]
